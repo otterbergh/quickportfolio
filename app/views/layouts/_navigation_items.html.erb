@@ -1,0 +1,11 @@
+<% if user_signed_in? %>
+  <li>
+  <%= link_to 'My portfolios', portfolios_path %>        
+  </li>
+  <li>
+  <a href="#">My watchlist</a>
+  </li>
+  <li>
+  <%= link_to 'Stocks', stocks_path %>
+  </li>
+<% end %>

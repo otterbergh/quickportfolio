@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="span6">
+    <legend><%= @user.username %>'s portfolios</legend>
+    <table class="table table-striped">
+      <thead>
+        <th>Name</th>
+        <th>+/-</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+      <% @portfolios.each do |portfolio| %>
+        <tr>
+          <td>
+          <%= link_to portfolio.name, portfolio %>
+          <% if portfolio.portfolio_contents.count > 0 %> 
+            &nbsp;&nbsp;<i class="icon-chevron-down" id="<%= portfolio.id %>"></i>
+          <% end %>
+          </td>
+          <td>100 %</td>
+          <td>
+            <%= link_to edit_portfolio_path(portfolio) do %>
+            <i class="icon-pencil"></i>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to portfolio, :method => :delete, :id => 'delete-portfolio-btn' do %>
+              <i class="icon-trash"></i>
+            <% end %>
+          </td>          
+        </tr>
+        <tr id="portfolio-details-<%= portfolio.id %>" style="display: none;">
+            <td></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= link_to new_portfolio_path, :class => "btn btn-primary btn-mini" do %>
+      <i class="icon-plus icon-white"></i> New portfolio
+    <% end %>
+  </div>
+  <div class="span6">
+    <legend>Search stock</legend>  
+    <%= form_tag(stocks_search_path, :method => "get", :class => "form-inline") do %>
+      <%= text_field_tag(:query_stock, nil, :class => "input-large", :placholder => "Search stock...") %>
+      <button type="submit" class="btn btn-primary hidden-phone">
+        <i class="icon-search icon-white"></i> Search
+      </button>
+    <% end %>
+  </div>
+</div>
+<%= render 'portfolios/delete' %>

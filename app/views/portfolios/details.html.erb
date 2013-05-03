@@ -1,0 +1,23 @@
+<td>
+<table class = "table table-striped table-condensed">
+  <thead>
+  <tr>
+      <th>Ticker</th>
+      <th>Today +/-</th>
+      <th>Total +/-</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @portfolio.portfolio_contents.each do |content| %>
+    <tr>
+      <td><%= link_to content.stock.ticker, content.stock %></td>
+      <td>-0.5 %</td>      
+      <td>267 %</td>
+    </tr>  
+<% end %>
+  </tbody>
+</table>
+</td>
+<td></td>
+<td></td>
+<td></td>

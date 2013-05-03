@@ -1,0 +1,15 @@
+<h1>Found stocks</h1>
+<% unless @stocks.nil? %>
+<table>
+  <tr>
+    <th>Ticker</th>
+    <th>Name</th>
+  </tr>
+  <% @stocks.each do |stock| %>
+    <tr>
+      <td><%= link_to stock.ticker, stock_path(stock) %></td>
+      <td><%= stock.name %></td>
+    </tr>
+  <% end %>
+<% end %>
+</table>
