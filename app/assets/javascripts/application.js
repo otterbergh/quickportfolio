@@ -15,5 +15,6 @@
 //= require jquery-ui
 //= require bootstrap
 //= require jquery.flot
+//= reuqire jquery.flot.time
 //= require jquery.flot.resize
 //= require_tree .

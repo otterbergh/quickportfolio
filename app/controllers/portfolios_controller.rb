@@ -11,6 +11,7 @@ class PortfoliosController < ApplicationController
   def show
     @portfolios = current_user.portfolios.all 
     @portfolio = current_user.portfolios.find(params[:id])
+    @stock = Stock
 
     respond_to do |format|
       format.html # show.html.erb

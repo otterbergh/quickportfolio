@@ -25,26 +25,40 @@
         <tr>
           <th>Ticker</th>
           <th>Name</th>
-          <th>Quantity</th>
-          <th>Purchase price</th>
-          <th>Market price</th>
-          <th>Purchase Value</th>
-          <th>Market value</th>
+          <th class="numeric">Quantity</th>
+          <th class="numeric">Purchase price</th>
+          <th class="numeric">Market price</th>
+          <th class="numeric">Purchase Value</th>
+          <th class="numeric">Market value</th>
+          <th class="numeric">Yield</th>
+          <th class="numeric">Yield %</th>
         </tr>
       </thead>
       <tbody>
       <% @portfolio.portfolio_contents.each do |content| %>
+      <% stockdata = @stock.stock_data(content.stock.ticker) %>
         <tr>
           <td data-title="Ticker"><%= link_to content.stock.ticker, content.stock %></td>
           <td data-title="Name"><%= content.stock.name %></td>
-          <td data-title="Quantity"><%= content.quantity %></td>      
-          <td data-title="Purchase price"><%= content.purchase_price %> SEK</td>
-          <td data-title="Market price"><%= content.purchase_price + 5 %> SEK</td>
-          <td data-title="Purchase value"><%= content.purchase_price * content.quantity %> SEK</td>
-          <td data-title="Market value"><%= (content.purchase_price + 5) * content.quantity %> SEK</td>
+          <td data-title="Quantity" class="numeric"><%= content.quantity %></td>      
+          <td data-title="Purchase price" class="numeric"><%= number_with_precision(content.purchase_price, :precision => 2) %></td>
+          <td data-title="Market price" class="numeric"><%= number_with_precision(stockdata["LastTradePriceOnly"].to_f, :precision => 2) %></td>
+          <td data-title="Purchase value" class="numeric"><%= content.purchase_price * content.quantity %></td>
+          <td data-title="Market value" class="numeric"><%= stockdata["LastTradePriceOnly"].to_i * content.quantity %></td>
+          <td data-title="Yield" class="numeric"><%= (stockdata["LastTradePriceOnly"].to_i * content.quantity) - (content.purchase_price * content.quantity) %></td>
+          <td data-title="Yield %" class="numeric"><%= number_with_precision((stockdata["LastTradePriceOnly"].to_f / content.purchase_price - 1)*100, :precision => 2) %></td>
         </tr>  
       <% end %>
       </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="5">Total:</th>
+          <td data-title="Purchase value" class="numeric"><strong>1M</strong></td>
+          <td data-title="Market value" class="numeric"><strong>2M</strong></td>
+          <td data-title="Yield" class="numeric"><strong>1M</strong></td>
+          <td data-title="Yeild %" class="numeric"><strong>100</strong></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
   <div class="span12">

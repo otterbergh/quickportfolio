@@ -1,4 +1,4 @@
-require 'net/http'
+require 'time'
 
 class StocksController < ApplicationController
   # GET /stocks
@@ -16,11 +16,11 @@ class StocksController < ApplicationController
   # GET /stocks/1.json
   def show
     @stock = Stock.find(params[:id])
-    @stockdata = stock_data(@stock.ticker)
-
+    @stockdata = Stock.stock_data(@stock.ticker)
+    #@stockdata = @stockdata
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @stock, :json => @stockdata }
+      format.json { render :json => @stock }
     end
   end
   
@@ -32,19 +32,31 @@ class StocksController < ApplicationController
       end
     end
   end
-
-  def stock_data(symbol)
-    url = URI::parse "http://download.finance.yahoo.com/d/quotes.csv?s=#{symbol}&f=c1l1t1ohgv"
-    req = Net::HTTP::get(url).gsub /"/, ''
-
-    #
-    # do stuff, e.g. save data to database, etc.
-    #
-    @stockdata = req.split(",");
-    #respond_to do |format|
-    #  format.json { render :json => @stockdata}
-    #end
-    return @stockdata
-  end  
+  
+  def progress
+    @stock = Stock.find(params[:id])
+    progress = Hash.new
+    progress_response = Hash.new
+    
+    progress_result = Stock.stock_progress(@stock.ticker, 30)
+    
+    skip = true
+    progress_result.each do |line|
+      unless skip
+        progress.store (Time.parse(line.split(',')[0]).to_i*1000, line.split(',')[4])
+      end
+      skip = false
+    end
+    
+    progress = progress.sort_by { |date, close| date }
+    
+    count = 0;
+    progress.each do |key, value|
+      progress_response.store (count, value)
+      count = count+1
+    end
+    render :json => progress.to_json
+    #render :json => [[0, 31], [0.5, 28.6], [1, 30.0], [1.3, 26.4], [6.2, 37]].to_json
+  end
   
 end

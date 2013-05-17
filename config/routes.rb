@@ -4,6 +4,7 @@ Quickportfolio::Application.routes.draw do
   
   get "stocks/search"
   post "stocks/search"
+  match "stocks/progress/:id" => "stocks#progress"
   
   get 'portfolios/details' 
   match 'portfolios/details/:id' => 'portfolios#details'

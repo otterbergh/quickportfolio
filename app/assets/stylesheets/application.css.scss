@@ -32,6 +32,7 @@ body {
 .responsive-table td.numeric, th.numeric { text-align: right; }
 
 @media only screen and (max-width: 1024px) {
+.responsive-table td.numeric, th.numeric { text-align: left; }
 	/* Force table to not be like tables anymore */
 	.responsive-table table, 
 	.responsive-table thead, 
